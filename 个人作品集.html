@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="xiaoyu 的个人作品集 — 康奈尔笔记风格的学习总结页，用代码和设计把想法变成有温度的作品。" />
+    <title>个人作品集 · xiaoyu</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNBOEQ4RUEiLz48cmVjdCB4PSIxNCIgeT0iMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSI2IiByeD0iMyIgZmlsbD0iI0ZGRiIvPjxyZWN0IHg9IjE0IiB5PSIzNiIgd2lkdGg9IjI0IiBoZWlnaHQ9IjYiIHJ4PSIzIiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIwLjYiLz48L3N2Zz4K" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        /* 纸张与墨色 */
+        --paper: #fbfbf7;
+        --paper-2: #f4f5ef;
+        --card: #ffffff;
+        --ink: #33383f;
+        --muted: #8a929b;
+        --line: #e7e5dc;
+
+        /* 马卡龙配色 —— 蓝 / 绿 / 橙 */
+        --blue: #cfeaf5;
+        --blue-soft: #eaf5fb;
+        --blue-strong: #4e9ac4;
+        --blue-ink: #2e6e93;
+
+        --green: #ceebdd;
+        --green-soft: #ebf6f0;
+        --green-strong: #5faf8b;
+        --green-ink: #3f7d63;
+
+        --orange: #fde1c4;
+        --orange-soft: #fdf2e5;
+        --orange-strong: #e59a63;
+        --orange-ink: #b26e3e;
+
+        --radius-sm: 10px;
+        --radius: 16px;
+        --radius-lg: 20px;
+        --radius-full: 999px;
+
+        --shadow: 0 6px 20px rgba(51, 56, 63, 0.06);
+        --shadow-lg: 0 16px 40px rgba(51, 56, 63, 0.10);
+
+        --font-sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+        --font-mono: 'SF Mono', 'Cascadia Code', 'JetBrains Mono', 'Roboto Mono', Consolas, monospace;
+
+        --page-w: 1100px;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: var(--font-sans);
+        color: var(--ink);
+        line-height: 1.75;
+        background:
+          radial-gradient(#e2e0d6 1px, transparent 1px) 0 0 / 26px 26px,
+          #efeee8;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      img, svg { display: block; max-width: 100%; }
+      a { color: inherit; text-decoration: none; }
+      button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+      ul { list-style: none; }
+      h1, h2, h3, h4 { line-height: 1.3; font-weight: 700; }
+
+      /* 统一风格：线性图标 */
+      .ico {
+        width: 1.25em; height: 1.25em;
+        fill: none; stroke: currentColor;
+        stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+        flex-shrink: 0;
+      }
+      .ico-fill { width: 1.25em; height: 1.25em; fill: currentColor; stroke: none; flex-shrink: 0; }
+
+      /* ===== 纸张 ===== */
+      .page {
+        max-width: var(--page-w);
+        margin: 28px auto 56px;
+        padding: 44px 52px 56px;
+        background: var(--paper);
+        border-radius: 6px;
+        box-shadow: 0 10px 44px rgba(51, 56, 63, 0.10);
+      }
+
+      /* ===== 顶格 · 页眉（含日期）===== */
+      .sheet-top {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 16px; flex-wrap: wrap;
+        padding-bottom: 14px;
+        border-bottom: 1.5px solid var(--ink);
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        letter-spacing: 0.02em;
+      }
+      .sheet-top .date { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 700; }
+      .sheet-top .date .ico { color: var(--orange-strong); }
+      .sheet-top .no { color: var(--muted); }
+
+      .sheet-head { padding: 26px 0 8px; }
+      .sheet-head .kicker {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em;
+        color: var(--blue-ink); font-weight: 700;
+      }
+      .sheet-head h1 {
+        font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+        font-weight: 900;
+        letter-spacing: 0.02em;
+        margin-top: 6px;
+      }
+      .sheet-head .sub { color: var(--muted); font-size: 0.98rem; margin-top: 6px; }
+
+      .toc {
+        margin-top: 18px; padding: 12px 16px;
+        background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius);
+        display: flex; flex-wrap: wrap; align-items: center; gap: 6px 4px;
+        font-size: 0.85rem;
+      }
+      .toc .toc-label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; color: var(--muted); margin-right: 8px; }
+      .toc a {
+        padding: 3px 12px; border-radius: var(--radius-full);
+        font-weight: 700; color: var(--ink);
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+      .toc a:hover { background: var(--blue-soft); color: var(--blue-ink); }
+      .toc .sep { color: var(--line); user-select: none; }
+
+      /* ===== 康奈尔式分区 ===== */
+      .sheet-section {
+        display: grid;
+        grid-template-columns: 196px 1fr;
+        gap: 34px;
+        padding: 40px 0;
+        border-bottom: 1px dashed var(--line);
+      }
+      .sheet-section:last-of-type { border-bottom: none; }
+      .cue {
+        border-right: 1.5px solid var(--orange);
+        padding-right: 22px;
+        display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+      }
+      .cue-num {
+        font-family: var(--font-mono); font-size: 2rem; font-weight: 700; line-height: 1;
+        color: var(--ink); opacity: 0.22;
+      }
+      .cue-ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 1.25rem; }
+      .c-blue   { background: var(--blue-soft);   color: var(--blue-ink); }
+      .c-green  { background: var(--green-soft);  color: var(--green-ink); }
+      .c-orange { background: var(--orange-soft); color: var(--orange-ink); }
+      .cue-title { font-size: 1.35rem; font-weight: 900; color: var(--ink); }
+      .cue-sub { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; color: var(--muted); }
+
+      .notes { min-width: 0; }
+
+      /* ===== 模块（模块框）===== */
+      .mod {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+      .mod--blue   { border-top: 3px solid var(--blue-strong); }
+      .mod--green  { border-top: 3px solid var(--green-strong); }
+      .mod--orange { border-top: 3px solid var(--orange-strong); }
+
+      .mod-head {
+        display: flex; align-items: center; gap: 11px;
+        padding: 13px 18px; border-bottom: 1px solid var(--line);
+      }
+      .mod--blue   .mod-head { background: var(--blue-soft); }
+      .mod--green  .mod-head { background: var(--green-soft); }
+      .mod--orange .mod-head { background: var(--orange-soft); }
+      .mod-ico {
+        width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center;
+        font-size: 1.05rem; flex-shrink: 0;
+      }
+      .mod--blue   .mod-ico { background: var(--blue);   color: var(--blue-ink); }
+      .mod--green  .mod-ico { background: var(--green);  color: var(--green-ink); }
+      .mod--orange .mod-ico { background: var(--orange); color: var(--orange-ink); }
+      .mod-head h3 { font-size: 1.05rem; font-weight: 700; }
+      .mod-tag {
+        margin-left: auto; font-family: var(--font-mono); font-size: 0.7rem;
+        letter-spacing: 0.06em; color: var(--muted);
+        padding: 3px 10px; border: 1px solid var(--line); border-radius: var(--radius-full);
+        white-space: nowrap;
+      }
+      .mod-body { padding: 18px; color: var(--ink); }
+      .mod-body p { font-size: 0.94rem; color: #4b5259; }
+      .mod-body p + p { margin-top: 10px; }
+
+      /* 徽章 / 芯片 */
+      .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+      .chip {
+        display: inline-block; padding: 5px 13px; border-radius: var(--radius-full);
+        font-size: 0.8rem; font-weight: 700;
+      }
+      .chip--blue   { background: var(--blue-soft);   color: var(--blue-ink); }
+      .chip--green  { background: var(--green-soft);  color: var(--green-ink); }
+      .chip--orange { background: var(--orange-soft); color: var(--orange-ink); }
+
+      /* 勾选清单（重要目标 / 要点）*/
+      .check-list { display: flex; flex-direction: column; gap: 10px; }
+      .check-list li {
+        display: flex; align-items: center; gap: 10px;
+        font-size: 0.92rem; font-weight: 500; color: #4b5259;
+      }
+      .check-list li .ico { width: 1.1em; height: 1.1em; }
+      .check-list li.done { color: var(--green-ink); font-weight: 700; }
+      .check-list li.done .ico { color: var(--green-strong); }
+      .check-list li.todo .ico { color: var(--orange-strong); }
+
+      /* 按钮 */
+      .btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 12px 22px; border-radius: var(--radius-full);
+        font-weight: 700; font-size: 0.92rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      }
+      .btn .ico { font-size: 1.05em; }
+      .btn:hover { transform: translateY(-2px); }
+      .btn-blue { background: var(--blue-strong); color: #fff; box-shadow: 0 6px 16px rgba(78, 154, 196, 0.32); }
+      .btn-blue:hover { background: #3d87b1; }
+      .btn-ghost { background: var(--card); color: var(--ink); border: 1.5px solid var(--line); }
+      .btn-ghost:hover { border-color: var(--green-strong); color: var(--green-ink); }
+
+      /* ===== 概览（Hero）===== */
+      .hero-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 18px; }
+      .hero-intro .hello-chip {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-size: 0.82rem; font-weight: 700; color: var(--blue-ink);
+        background: var(--blue-soft); padding: 6px 14px; border-radius: var(--radius-full);
+      }
+      .hero-intro h2.name { font-size: clamp(2rem, 5vw, 2.7rem); font-weight: 900; margin: 14px 0 4px; }
+      .hero-intro .role { font-size: 0.95rem; font-weight: 700; color: var(--muted); }
+      .hero-intro .bio { margin: 12px 0 18px; }
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+      .hero-goal .mod-head { cursor: default; }
+
+      .info-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+      .info-tile {
+        display: flex; align-items: center; gap: 12px;
+        padding: 14px 16px; border-radius: var(--radius);
+        border: 1px solid var(--line); background: var(--card);
+      }
+      .info-tile .ico-wrap { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; flex-shrink: 0; }
+      .tile--blue   .ico-wrap { background: var(--blue-soft);   color: var(--blue-ink); }
+      .tile--green  .ico-wrap { background: var(--green-soft);  color: var(--green-ink); }
+      .tile--orange .ico-wrap { background: var(--orange-soft); color: var(--orange-ink); }
+      .info-tile .k { display: block; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--muted); }
+      .info-tile .v { display: block; font-weight: 700; font-size: 0.92rem; word-break: break-all; }
+
+      /* ===== 关于 ===== */
+      .about-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 18px; }
+      .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .stat { text-align: center; padding: 18px 10px; border-radius: var(--radius); border: 1px solid var(--line); }
+      .stat .value { font-family: var(--font-mono); font-size: 1.7rem; font-weight: 700; line-height: 1.1; }
+      .stat .label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+      .stat--blue   { background: var(--blue-soft); }   .stat--blue   .value { color: var(--blue-ink); }
+      .stat--green  { background: var(--green-soft); }  .stat--green  .value { color: var(--green-ink); }
+      .stat--orange { background: var(--orange-soft); } .stat--orange .value { color: var(--orange-ink); }
+
+      /* ===== 项目 ===== */
+      .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .project-cover {
+        height: 120px; display: grid; place-items: center;
+        border-bottom: 1px solid var(--line);
+      }
+      .project-cover .ico { width: 44px; height: 44px; }
+      .cover-blue   { background: var(--blue-soft);   color: var(--blue-ink); }
+      .cover-green  { background: var(--green-soft);  color: var(--green-ink); }
+      .cover-orange { background: var(--orange-soft); color: var(--orange-ink); }
+      .project-card .mod-body { display: flex; flex-direction: column; gap: 12px; }
+      .project-card .desc { flex: 1; }
+      .project-links { display: flex; gap: 14px; padding-top: 4px; }
+      .project-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 700; }
+      .project-link .ico { font-size: 1em; }
+      .link-blue   { color: var(--blue-ink); }   .link-blue:hover   { text-decoration: underline; }
+      .link-green  { color: var(--green-ink); }  .link-green:hover  { text-decoration: underline; }
+      .link-orange { color: var(--orange-ink); } .link-orange:hover { text-decoration: underline; }
+
+      /* ===== 技能 ===== */
+      .skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .skill-cat .mod-body { padding: 16px 18px; }
+
+      /* ===== 联系 ===== */
+      .contact-card { text-align: left; }
+      .contact-mail {
+        display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap;
+        font-family: var(--font-mono); font-size: clamp(1rem, 2.6vw, 1.35rem); font-weight: 700;
+        color: var(--blue-ink); margin: 6px 0 4px;
+      }
+      .contact-mail .ico { color: var(--orange-strong); }
+      .contact-mail:hover { text-decoration: underline; }
+      .contact-note { display: flex; align-items: flex-start; gap: 8px; font-size: 0.86rem; color: var(--muted); margin-top: 8px; }
+      .contact-note .ico { color: var(--green-strong); margin-top: 4px; }
+
+      /* ===== 总结栏（康奈尔 Summary）===== */
+      .summary-box {
+        margin-top: 10px;
+        display: flex; gap: 16px; align-items: flex-start;
+        background: linear-gradient(135deg, var(--blue-soft), var(--green-soft));
+        border: 1px solid var(--line); border-left: 4px solid var(--green-strong);
+        border-radius: var(--radius); padding: 20px 22px;
+      }
+      .summary-box .summary-ico {
+        width: 40px; height: 40px; border-radius: 11px; flex-shrink: 0;
+        display: grid; place-items: center; background: #fff; color: var(--green-ink);
+        box-shadow: var(--shadow);
+      }
+      .summary-label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--green-ink); font-weight: 700; }
+      .summary-box p { font-size: 0.94rem; color: #46505a; margin-top: 6px; }
+
+      /* ===== 页脚 ===== */
+      .footer {
+        margin-top: 40px; padding-top: 22px;
+        border-top: 1.5px solid var(--ink);
+        display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+        font-size: 0.88rem; color: var(--muted);
+      }
+      .footer .socials { display: flex; gap: 10px; }
+      .footer .socials a {
+        width: 38px; height: 38px; display: grid; place-items: center; border-radius: var(--radius-full);
+        background: var(--card); border: 1.5px solid var(--line); color: var(--muted);
+        transition: color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+      }
+      .footer .socials a:hover { color: var(--blue-ink); border-color: var(--blue-strong); transform: translateY(-2px); }
+
+      .back-top {
+        position: fixed; right: 22px; bottom: 22px; width: 46px; height: 46px;
+        border-radius: var(--radius-full); background: var(--blue-strong); color: #fff;
+        display: grid; place-items: center; box-shadow: var(--shadow-lg);
+        opacity: 0; transform: translateY(12px); pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease; z-index: 40;
+      }
+      .back-top.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+      .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.55s ease, transform 0.55s ease; }
+      .reveal.is-visible { opacity: 1; transform: none; }
+
+      /* ===== 响应式 ===== */
+      @media (max-width: 880px) {
+        .page { margin: 0; border-radius: 0; padding: 26px 20px 40px; }
+        .sheet-section { grid-template-columns: 1fr; gap: 18px; }
+        .cue {
+          border-right: none; border-bottom: 1.5px solid var(--orange);
+          padding-right: 0; padding-bottom: 14px;
+          flex-direction: row; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .cue-num { font-size: 1.4rem; opacity: 0.3; }
+        .cue-sub { width: 100%; }
+        .hero-grid, .about-grid, .projects-grid, .skill-grid, .info-strip { grid-template-columns: 1fr; }
+        .info-strip { grid-template-columns: repeat(3, 1fr); }
+      }
+      @media (max-width: 560px) {
+        .info-strip { grid-template-columns: 1fr; }
+        .stat-grid { grid-template-columns: 1fr; }
+        .sheet-top .no { display: none; }
+      }
+
+      /* ===== 打印 ===== */
+      @media print {
+        body { background: #fff !important; }
+        .page { margin: 0; padding: 0; box-shadow: none; border-radius: 0; max-width: none; }
+        .back-top { display: none !important; }
+        .reveal { opacity: 1 !important; transform: none !important; }
+        .btn:hover { transform: none; }
+        .mod, .info-tile, .stat, .summary-box { box-shadow: none; }
+        .sheet-section, .mod, .info-tile { break-inside: avoid; }
+        a { color: inherit !important; }
+        .toc a, .btn { box-shadow: none; }
+        @page { margin: 14mm; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+
+      <!-- ===== 顶格页眉：日期 ===== -->
+      <header class="sheet-top">
+        <span class="date"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2026年10月19日 · 星期一</span>
+        <span class="no">NO. 001 · PORTFOLIO</span>
+      </header>
+
+      <div class="sheet-head">
+        <span class="kicker"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>STUDY NOTES · 学习总结</span>
+        <h1>个人作品集</h1>
+        <p class="sub">xiaoyu · 学生 / 开发者 / 设计爱好者</p>
+      </div>
+
+      <nav class="toc" aria-label="目录">
+        <span class="toc-label">目录 CONTENTS</span>
+        <a href="#overview">概览</a><span class="sep">›</span>
+        <a href="#about">关于</a><span class="sep">›</span>
+        <a href="#projects">项目</a><span class="sep">›</span>
+        <a href="#skills">技能</a><span class="sep">›</span>
+        <a href="#contact">联系</a>
+      </nav>
+
+      <main>
+        <!-- ===== 00 概览 ===== -->
+        <section class="sheet-section" id="overview">
+          <div class="cue">
+            <span class="cue-num">00</span>
+            <span class="cue-ico c-orange"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V18h6v-1.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></span>
+            <h2 class="cue-title">概览</h2>
+            <span class="cue-sub">OVERVIEW · 目标</span>
+          </div>
+          <div class="notes">
+            <div class="hero-grid">
+              <article class="mod mod--blue hero-intro reveal">
+                <div class="mod-body">
+                  <span class="hello-chip">👋 你好，我是</span>
+                  <h2 class="name">xiaoyu</h2>
+                  <div class="role">学生 · 开发者 · 设计爱好者</div>
+                  <p class="bio">用代码和设计，把想法变成有温度的作品。喜欢把课堂上学到的知识变成真实可用的东西，也享受认真打磨每一个细节。</p>
+                  <div class="hero-actions">
+                    <a href="#projects" class="btn btn-blue">查看作品<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                    <a href="#contact" class="btn btn-ghost">联系我</a>
+                  </div>
+                </div>
+              </article>
+
+              <article class="mod mod--orange hero-goal reveal">
+                <header class="mod-head">
+                  <span class="mod-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+                  <h3>重要目标</h3>
+                  <span class="mod-tag">GOAL</span>
+                </header>
+                <div class="mod-body">
+                  <ul class="check-list">
+                    <li class="done"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>整理并发布个人作品集</li>
+                    <li class="done"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>用 Cornell 笔记法梳理学习</li>
+                    <li class="done"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>坚持记录与输出</li>
+                    <li class="todo"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>学习 UI / 视觉设计进阶</li>
+                  </ul>
+                </div>
+              </article>
+            </div>
+
+            <div class="info-strip">
+              <div class="info-tile tile--blue reveal">
+                <span class="ico-wrap"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></span>
+                <span><span class="k">EMAIL · 邮箱</span><span class="v">2352942663@qq.com</span></span>
+              </div>
+              <div class="info-tile tile--green reveal">
+                <span class="ico-wrap"><svg class="ico-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>
+                <span><span class="k">GITHUB · 代码</span><span class="v">github.com/xiaoyu</span></span>
+              </div>
+              <div class="info-tile tile--orange reveal">
+                <span class="ico-wrap"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></span>
+                <span><span class="k">MAJOR · 方向</span><span class="v">计算机 · 前端 / 设计</span></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== 01 关于 ===== -->
+        <section class="sheet-section" id="about">
+          <div class="cue">
+            <span class="cue-num">01</span>
+            <span class="cue-ico c-blue"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+            <h2 class="cue-title">关于我</h2>
+            <span class="cue-sub">ABOUT · 自我</span>
+          </div>
+          <div class="notes">
+            <div class="about-grid">
+              <article class="mod mod--blue reveal">
+                <header class="mod-head">
+                  <span class="mod-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+                  <h3>简介</h3>
+                  <span class="mod-tag">PROFILE</span>
+                </header>
+                <div class="mod-body">
+                  <p>我是一名在读学生，主修计算机相关专业。课余时间喜欢折腾小程序、做点小设计，也偶尔写写博客记录学习过程。</p>
+                  <p>我相信好的作品是「有用」和「好看」的结合——写代码的同时也会认真打磨界面与体验，让每一个作品都带着一点自己的温度。</p>
+                  <div class="chips" style="margin-top: 16px">
+                    <span class="chip chip--blue">好奇心驱动</span>
+                    <span class="chip chip--green">注重细节</span>
+                    <span class="chip chip--orange">乐于合作</span>
+                    <span class="chip chip--blue">持续学习</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="mod mod--green reveal">
+                <header class="mod-head">
+                  <span class="mod-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+                  <h3>数据</h3>
+                  <span class="mod-tag">STATS</span>
+                </header>
+                <div class="mod-body">
+                  <div class="stat-grid">
+                    <div class="stat stat--blue"><div class="value">10+</div><div class="label">完成项目</div></div>
+                    <div class="stat stat--green"><div class="value">5+</div><div class="label">掌握技能</div></div>
+                    <div class="stat stat--orange"><div class="value">3</div><div class="label">获奖经历</div></div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== 02 项目 ===== -->
+        <section class="sheet-section" id="projects">
+          <div class="cue">
+            <span class="cue-num">02</span>
+            <span class="cue-ico c-green"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg></span>
+            <h2 class="cue-title">精选项目</h2>
+            <span class="cue-sub">PROJECTS · 流程</span>
+          </div>
+          <div class="notes">
+            <div class="projects-grid">
+              <article class="mod mod--blue project-card reveal">
+                <div class="project-cover cover-blue"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg></div>
+                <div class="mod-body">
+                  <h3>数据结构可视化工具</h3>
+                  <p class="desc">用 C 语言实现栈、队列、二叉树、图等常见数据结构，并配套可视化演示，帮助理解抽象概念。</p>
+                  <div class="chips"><span class="chip chip--blue">C</span><span class="chip chip--green">算法</span><span class="chip chip--orange">可视化</span></div>
+                  <div class="project-links">
+                    <a class="project-link link-blue" href="https://github.com/xiaoyu" target="_blank" rel="noreferrer"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>代码</a>
+                    <a class="project-link link-blue" href="#projects" target="_blank" rel="noreferrer"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>演示</a>
+                  </div>
+                </div>
+              </article>
+
+              <article class="mod mod--green project-card reveal">
+                <div class="project-cover cover-green"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                <div class="mod-body">
+                  <h3>个人博客网站</h3>
+                  <p class="desc">一个记录学习笔记与生活点滴的个人博客，支持标签分类与响应式布局。</p>
+                  <div class="chips"><span class="chip chip--blue">HTML</span><span class="chip chip--green">CSS</span><span class="chip chip--orange">JavaScript</span></div>
+                  <div class="project-links">
+                    <a class="project-link link-green" href="https://github.com/xiaoyu" target="_blank" rel="noreferrer"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>代码</a>
+                    <a class="project-link link-green" href="#projects" target="_blank" rel="noreferrer"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>演示</a>
+                  </div>
+                </div>
+              </article>
+
+              <article class="mod mod--orange project-card reveal">
+                <div class="project-cover cover-orange"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div>
+                <div class="mod-body">
+                  <h3>校园活动海报设计</h3>
+                  <p class="desc">为社团活动设计的一系列海报与周边物料，探索版式与配色。</p>
+                  <div class="chips"><span class="chip chip--blue">设计</span><span class="chip chip--green">排版</span><span class="chip chip--orange">配色</span></div>
+                  <div class="project-links">
+                    <a class="project-link link-orange" href="#projects" target="_blank" rel="noreferrer"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>演示</a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== 03 技能 ===== -->
+        <section class="sheet-section" id="skills">
+          <div class="cue">
+            <span class="cue-num">03</span>
+            <span class="cue-ico c-blue"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg></span>
+            <h2 class="cue-title">技能图谱</h2>
+            <span class="cue-sub">SKILLS · 网络</span>
+          </div>
+          <div class="notes">
+            <div class="skill-grid">
+              <article class="mod mod--blue skill-cat reveal">
+                <header class="mod-head">
+                  <span class="mod-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+                  <h3>编程语言</h3>
+                  <span class="mod-tag">LANG</span>
+                </header>
+                <div class="mod-body"><div class="chips"><span class="chip chip--blue">C / C++</span><span class="chip chip--blue">Python</span><span class="chip chip--blue">JavaScript</span><span class="chip chip--blue">HTML</span><span class="chip chip--blue">CSS</span></div></div>
+              </article>
+
+              <article class="mod mod--green skill-cat reveal">
+                <header class="mod-head">
+                  <span class="mod-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+                  <h3>框架 &amp; 工具</h3>
+                  <span class="mod-tag">TOOLS</span>
+                </header>
+                <div class="mod-body"><div class="chips"><span class="chip chip--green">React</span><span class="chip chip--green">Vite</span><span class="chip chip--green">Git</span><span class="chip chip--green">Node</span></div></div>
+              </article>
+
+              <article class="mod mod--orange skill-cat reveal">
+                <header class="mod-head">
+                  <span class="mod-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></span>
+                  <h3>设计 &amp; 媒体</h3>
+                  <span class="mod-tag">DESIGN</span>
+                </header>
+                <div class="mod-body"><div class="chips"><span class="chip chip--orange">Figma</span><span class="chip chip--orange">Photoshop</span><span class="chip chip--orange">UI 设计</span><span class="chip chip--orange">摄影</span></div></div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== 04 联系 ===== -->
+        <section class="sheet-section" id="contact">
+          <div class="cue">
+            <span class="cue-num">04</span>
+            <span class="cue-ico c-orange"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            <h2 class="cue-title">联系我</h2>
+            <span class="cue-sub">CONTACT · 箭头</span>
+          </div>
+          <div class="notes">
+            <article class="mod mod--blue contact-card reveal">
+              <header class="mod-head">
+                <span class="mod-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></span>
+                <h3>一起聊聊吧</h3>
+                <span class="mod-tag">MAIL</span>
+              </header>
+              <div class="mod-body">
+                <p>有任何想法或合作意向，欢迎通过邮箱找到我，一般会在 1–2 天内回复。</p>
+                <a class="contact-mail" href="mailto:2352942663@qq.com">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  2352942663@qq.com
+                </a>
+                <div class="contact-note">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  期待与你的交流，也欢迎到 GitHub 上看看我的项目。
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <!-- ===== 康奈尔总结栏 ===== -->
+      <div class="summary-box reveal">
+        <span class="summary-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+        <div>
+          <span class="summary-label">SUMMARY · 总结</span>
+          <p>热爱创造、注重细节的在校学生 xiaoyu，擅长前端开发与视觉设计，正持续学习与输出。期待用代码和设计，把想法变成有温度的作品。</p>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div>© <span id="year">2026</span> xiaoyu · 用 ❤️ 整理的学习总结</div>
+        <div class="socials">
+          <a href="https://github.com/xiaoyu" target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub"><svg class="ico-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+          <a href="mailto:2352942663@qq.com" aria-label="邮箱" title="邮箱"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a>
+        </div>
+      </footer>
+    </div>
+
+    <button class="back-top" id="backTop" aria-label="返回顶部">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+    </button>
+
+    <script>
+      (function () {
+        var backTop = document.getElementById('backTop');
+        function onScroll() {
+          if (backTop) backTop.classList.toggle('show', window.scrollY > 420);
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+        if (backTop) {
+          backTop.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        }
+
+        var yearEl = document.getElementById('year');
+        if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+        var revealEls = document.querySelectorAll('.reveal');
+        if ('IntersectionObserver' in window) {
+          var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                obs.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+          revealEls.forEach(function (el) { obs.observe(el); });
+        } else {
+          revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+        }
+      })();
+    </script>
+  </body>
+</html>
